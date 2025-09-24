@@ -1,6 +1,6 @@
 #!/bin/bash
 
-AMI_ID=""
+AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0f89fe1c50eaa13ba" # replace with your own SG
 
 for instance in $@
