@@ -10,7 +10,7 @@ do
      Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
     #Get Private IP
-    if [ $instance != "frontend" ];then
+    if [ $instance != "frontend" ]; then
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 
         Instances[0].PrivateIpAddress" --output text)
     else
