@@ -5,7 +5,7 @@ SG_ID="sg-0f89fe1c50eaa13ba" # replace with your own SG
 ZONE_ID="Z1043828YHJ86FJSXALD" # replace with your ID
 DOMAIN_NAME="chiru1982.fun"
 
-for instance in $@
+for instance in $@   # $@ is for all type of exist status
 do
     INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
