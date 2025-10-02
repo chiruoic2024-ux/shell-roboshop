@@ -29,8 +29,8 @@ VALIDATE(){ # Functions receives inputs through args just like shell script args
 
 }
 
-dnf install maven -y
-
+dnf install maven -y &>>$LOG_FILE
+VALIDATE $? "Installing Maven"
 id roboshop &>>$LOG_FILE
     if [ $? -ne 0 ]; then
         useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
@@ -52,16 +52,17 @@ unzip /tmp/shipping.zip &>>$LOG_FILE
 VALIDATE $? "Unzip the code" 
 
 mvn clean package &>>$LOG_FILE
+VALIDATE $? "Cleaning the package"
 mv target/shipping-1.0.jar shipping.jar 
-
+VALIDATE $? "Moving the jar"
 cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
-
+VALIDATE $? "copy systemctl service"
 systemctl daemon-reload
-
+VALIDATE $? "Daemon reload"
 systemctl enable shipping &>>$LOG_FILE
-
-dnf install mysql -y 
-
+VALIDATE $? "Enabling shipping"
+dnf install mysql -y &>>$LOG_FILE
+VALIDATE $? "Install mysql client"
 mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities' &>>$LOG_FILE
 if [ $? -ne 0 ]; then
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql &>>$LOG_FILE
@@ -72,3 +73,4 @@ else
 fi
 
 systemctl restart shipping
+VALIDATE $? "Restart shipping "
