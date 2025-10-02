@@ -65,7 +65,7 @@ VALIDATE $? "Daemon reload"
 systemctl enable catalogue &>>$LOG_FILE
 VALIDATE $? "Enable catalogue"
 
-cp mongo.repo  /etc/yum.repos.d/mongo.repo
+cp /$SCRIPT_DIR/mongo.repo  /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copy mango repo"
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB client"
