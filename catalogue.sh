@@ -30,9 +30,9 @@ VALIDATE(){ # Functions receives inputs through args just like shell script args
 }
 
 ################## NodeJS ###################
-dnf module disable nodejs -y
+dnf module disable nodejs -y  &>>$LOG_FILE
 VALIDATE $? "Disabling NodeJS"
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE
 VALIDATE $? "Enabling NodeJS"
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing NodeJS"
@@ -71,7 +71,7 @@ dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB client"
 
 INDEX=$(mongosh  mongodb.chiru1982.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
-    if[ $INDEX -le 0 ];then
+    if[ $INDEX -le 0 ]; then
         mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
         VALIDATE $? "Load catalogue products"
     else
