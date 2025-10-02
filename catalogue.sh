@@ -53,8 +53,8 @@ VALIDATE $? "Changing to app directory"
 rm -rf /app/*
 VALIDATE $? "Removing existing code"
 
-unzip /tmp/catalogue.zip
-VALIDATE $? "Unzip the code" &>>$LOG_FILE
+unzip /tmp/catalogue.zip &>>$LOG_FILE
+VALIDATE $? "Unzip the code" 
 
 npm install &>>$LOG_FILE
 VALIDATE $? "Install Dependencies" &>>$LOG_FILE
@@ -71,7 +71,7 @@ dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB client"
 
 INDEX=$(mongosh  mongodb.chiru1982.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
-    if[ INDEX -le 0 ];then
+    if[ $INDEX -le 0 ];then
         mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
         VALIDATE $? "Load catalogue products"
     else
