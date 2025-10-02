@@ -41,7 +41,7 @@ id roboshop
         useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
         VALIDATE $? "Creating sytem user"
     else
-        echo "User already exist........$Y..SKIPPING......$N"
+        echo -e "User already exist........$Y..SKIPPING......$N"
     fi
 mkdir -p /app 
 VALIDATE $? "Creating app directory"
@@ -49,6 +49,10 @@ curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue
 VALIDATE $? "Download catalogue code"
 cd /app 
 VALIDATE $? "Changing to app directory"
+
+rm -rf /app/*
+VALIDATE $? "Removing existing code"
+
 unzip /tmp/catalogue.zip
 VALIDATE $? "Unzip the code" &>>$LOG_FILE
 
