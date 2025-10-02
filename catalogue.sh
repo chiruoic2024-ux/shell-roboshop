@@ -34,33 +34,33 @@ dnf module disable nodejs -y
 VALIDATE $? "Disabling NodeJS"
 dnf module enable nodejs:20 -y
 VALIDATE $? "Enabling NodeJS"
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing NodeJS"
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop1
 VALIDATE $? "Creating sytem user"
 mkdir /app 
 VALIDATE $? "Creating app directory"
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 VALIDATE $? "Download catalogue code"
 cd /app 
 VALIDATE $? "Changing to app directory"
 unzip /tmp/catalogue.zip
-VALIDATE $? "Unzip the code"
+VALIDATE $? "Unzip the code" &>>$LOG_FILE
 
-npm install 
-VALIDATE $? "Install Dependencies"
+npm install &>>$LOG_FILE
+VALIDATE $? "Install Dependencies" &>>$LOG_FILE
 cp /$SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Copy systemctl service"
 systemctl daemon-reload
 VALIDATE $? "Daemon reload"
-systemctl enable catalogue 
+systemctl enable catalogue &>>$LOG_FILE
 VALIDATE $? "Enable catalogue"
 
 cp mongo.repo  /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copy mango repo"
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB client"
-mongosh --host $MONGODB_HOST </app/db/master-data.js
+mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "Load catalogue products"
 systemctl restart catalogue
 VALIDATE $? "Restart catalogue"
