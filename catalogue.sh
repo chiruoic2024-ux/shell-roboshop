@@ -76,7 +76,7 @@ VALIDATE $? "Copy mongo repo"
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Install MongoDB client"
 
-mongosh --host Mmongodb.chiru1982.fun </app/db/master-data.js
+mongosh --host $MONGODB_HOST </app/db/master-data.js
 
 # INDEX=$(mongosh mongodb.chiru1982.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
 # if [ $INDEX -le 0 ]; then
