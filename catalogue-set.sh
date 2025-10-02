@@ -34,6 +34,7 @@ id roboshop &>>$LOG_FILE
     else
         echo -e "User already exist........$Y..SKIPPING......$N"
     fi
+echo "Installing NodeJS:..............$G SUCCESS ....$N"
 mkdir -p /app 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 cd /app 
@@ -46,6 +47,7 @@ npm install &>>$LOG_FILE
 cp /$SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 systemctl daemon-reload
 systemctl enable catalogue &>>$LOG_FILE
+echo "Catalogue application setup:..............$G SUCCESS ....$N"
 
 cp /$SCRIPT_DIR/mongo.repo  /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongoshdddeee -y &>>$LOG_FILE
@@ -57,3 +59,4 @@ else
     echo -e "Catalogue Products are already loaded into DB .......$Y SKIPPING.....$N"
 fi
 systemctl restart catalogue
+echo "Loading Catalogue Products and restarting catalogue:..............$G SUCCESS ....$N"
